@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class GisWebModuleConfig(AppConfig):
-    name = 'gis_web_module'
+    name = 'naturall'
