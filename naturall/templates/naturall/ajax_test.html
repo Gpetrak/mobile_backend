@@ -1,0 +1,9 @@
+{% load static %}
+<html>
+<p>Hello World, I did it !</p>
+{% for p in points %}
+  <tr>
+    <td>{{p | safe}}</td>
+  </tr>
+{% endfor %}
+</html>
