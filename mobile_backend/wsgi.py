@@ -21,7 +21,7 @@ from django.core.wsgi import get_wsgi_application
 sys.path.append(BASE_DIR)
 
 # adjust the Python version in the line below as needed
-sys.path.append('~/venv/lib/python2.7/site-packages')
+sys.path.append('~/venv_mob/lib/python2.7/site-packages')
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mobile_backend.settings")
 
