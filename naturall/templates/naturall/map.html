@@ -10,12 +10,17 @@
 
 <body>
  
-    <div id='description'>
-        <p>
-            Συνεργατικό Σύστημα συλλογής Περιβαλλοντικών Δεδομένων
-        </p>
-    </div>
-    
+    <div id='tools'>
+   
+    <form>
+      <label>radius size</label>
+      <input id="radius" type="range" min="1" max="100" step="1" value="30"/>
+      <br>
+      <label>blur size</label>
+      <input id="blur" type="range" min="1" max="50" step="1" value="30"/>
+    </form> 
+    </div>  
+ 
     <!-- <div id='DP_1'>
     {% csrf_token %}
     </div> 

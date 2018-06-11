@@ -7,6 +7,9 @@ var mapComponent;
 var mapPanel;
 var overviewMap1;
 var overviewMap2;
+// declare blur and radius variables for tools div
+var blur = document.getElementById('blur');
+var radius = document.getElementById('radius');
 
 Ext.application({
     name: 'OverviewMaps',
@@ -16,7 +19,7 @@ Ext.application({
         var layer;
         var layer2;
         var olMap;
-        var description;
+        var tools;
         var ovMapPanel1;
         var ovMapPanel2;
 
@@ -25,7 +28,26 @@ Ext.application({
             source: source
         }); */
 
+        var heatPoints = new ol.layer.Heatmap({
+          source: new ol.source.Vector({
+            url: 'https://openlayers.org/en/v4.6.5/examples/data/kml/2012_Earthquakes_Mag5.kml',
+            format: new ol.format.KML({
+              extractStyles: false
+            })
+          }),
+          blur: parseInt(blur.value, 10),
+          radius: parseInt(radius.value, 10)
+        });
 
+        heatPoints.getSource().on('addfeature', function(event) {
+          // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
+          // standards-violating <magnitude> tag in each Placemark.  We extract it from
+          // the Placemark's name instead.
+          var name = event.feature.get('name');
+          var magnitude = parseFloat(name.substr(2));
+          event.feature.set('weight', magnitude - 5);
+        });    
+ 
         source2 = new ol.source.TileWMS({
             url: 'https://ows.terrestris.de/osm-gray/service',
             params: {'LAYERS': 'OSM-WMS', 'TILED': true}
@@ -45,7 +67,8 @@ Ext.application({
                     source: new ol.source.Stamen({
                         layer: 'terrain-labels'
                     })
-                })
+                }),
+                heatPoints,
             ],
             interactions: ol.interaction.defaults().extend([
                 new ol.interaction.DragRotateAndZoom()
@@ -54,6 +77,14 @@ Ext.application({
                 center: ol.proj.fromLonLat([24, 38.0]),
                 zoom: 7
             })
+        });
+
+        blur.addEventListener('input', function() {
+          heatPoints.setBlur(parseInt(blur.value, 10));
+        });
+
+        radius.addEventListener('input', function() {
+          heatPoints.setRadius(parseInt(radius.value, 10));
         });
 
         mapComponent = Ext.create('GeoExt.component.Map', {
@@ -95,9 +126,9 @@ Ext.application({
             })
         });
 
-        description = Ext.create('Ext.panel.Panel', {
-            contentEl: 'description',
-            title: 'Description',
+        tools = Ext.create('Ext.panel.Panel', {
+            contentEl: 'tools',
+            title: 'Tools',
             flex: 1,
             border: false,
             bodyPadding: 5,
@@ -105,14 +136,14 @@ Ext.application({
         });
 
         ovMapPanel1 = Ext.create('Ext.panel.Panel', {
-            title: 'OverviewMap (default)',
+            title: 'OverviewMap',
             flex: 1,
             layout: 'fit',
             items: overviewMap1
         });
 
         ovMapPanel2 = Ext.create('Ext.panel.Panel', {
-            title: 'OverviewMap (configured)',
+            //title: 'OverviewMap (configured)',
             flex: 1,
             layout: 'fit',
             items: overviewMap2
@@ -133,7 +164,7 @@ Ext.application({
                     },
                     items: [
                         ovMapPanel1,
-                        description,
+                        tools,
                         ovMapPanel2
                     ]
                 }
