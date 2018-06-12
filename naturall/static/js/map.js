@@ -30,32 +30,41 @@ Ext.application({
 
         var data = new ol.source.Vector();
 
+	// function in order to store ajax responses for later use
+        function store(item) {
+                return item;
+        }
         var csrf = Ext.util.Cookies.get('csrftoken');
-        var records = [];
-        Ext.Ajax.request({ 
-             url: 'data',
-             method: 'GET',
-             params: {
-             //'points' : coords_array,
-             'csrfmiddlewaretoken': csrf
-              },
-              success: function(response) {
-              // Ext.decode convert the resopnse from string to object
-              res = Ext.decode(response.responseText);
-              records.push({
-                      res: 'res',
+        var records= [];
+	
+        function goAjax () {
+		Ext.Ajax.request({ 
+                  url: 'data',
+                  method: 'GET',
+                  // wait JavaScript and store the ajax response (depricated)
+                  async: false,
+                  params: {
+                  //'points' : coords_array,
+                  'csrfmiddlewaretoken': csrf
+                  },
+                  success: function(response) {
+                  // Ext.decode convert the resopnse from string to object
+                  res = Ext.decode(response.responseText);
+                  records.push(res);
+                  // Ext.util.JSON.decode();
+                  // console.log(typeof(lonlat_list[0]));
+                  // alert("Your data submitted successfully !");
+                  }, 
+                  failure: function (response) {
+                  // var text = response.responseText;
+                  Ext.Msg.alert('Failure', 'Please try again...');
+                  },          
               });
-              // Ext.util.JSON.decode();
-              // console.log(typeof(lonlat_list[0]));
-              // alert("Your data submitted successfully !");
-              }, 
-              failure: function (response) {
-              // var text = response.responseText;
-              Ext.Msg.alert('Failure', 'Please try again...');
-              },          
-          });
-        console.log(records.res);
-        var coord = records;        
+	}
+	goAjax();
+	
+        console.log(records);
+        var coord = records[0];        
         // var coord = ol.proj.fromLonLat(lonlat_list_last);
         var lonlat = new ol.geom.Point(coord);
         // var lonlat = point;
