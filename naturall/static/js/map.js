@@ -42,7 +42,9 @@ Ext.application({
               success: function(response) {
               // Ext.decode convert the resopnse from string to object
               res = Ext.decode(response.responseText);
-              records.push(res);
+              records.push({
+                      res: 'res',
+              });
               // Ext.util.JSON.decode();
               // console.log(typeof(lonlat_list[0]));
               // alert("Your data submitted successfully !");
@@ -52,9 +54,8 @@ Ext.application({
               Ext.Msg.alert('Failure', 'Please try again...');
               },          
           });
-        console.log(records);
+        console.log(records.res);
         var coord = records;        
-        console.log(coord); 
         // var coord = ol.proj.fromLonLat(lonlat_list_last);
         var lonlat = new ol.geom.Point(coord);
         // var lonlat = point;
