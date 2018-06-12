@@ -31,17 +31,7 @@ Ext.application({
         var data = new ol.source.Vector();
 
         var csrf = Ext.util.Cookies.get('csrftoken');
-        
-        // take an array to store the object that we will get from the ajax response
         var records = [];
-        
-        // create extjs store with empty data
-        var store =  Ext.create('Ext.data.Store',{
-            fields : ['id','name'],
-            data: records,
-            paging : false
-        });
-
         Ext.Ajax.request({ 
              url: 'data',
              method: 'GET',
@@ -50,24 +40,9 @@ Ext.application({
              'csrfmiddlewaretoken': csrf
               },
               success: function(response) {
-              // create a json object from the response string
-              res = Ext.decode(response.responseText, true);
-
-              // if we have a valid json object, then process it
-              if(res !== null && typeof (res) !== 'undefined') {
-                // loop through the data
-                Ext.each(res.data, function(obj) {
-                  // add the records to the array
-                  records.push({
-                    id: obj.id,
-                    name: obj.name
-                  })
-               });
-               
-               // update the store with the data that we got
-               store.loadData(records);
-              }
-               
+              // Ext.decode convert the resopnse from string to object
+              res = Ext.decode(response.responseText);
+              records.push(res);
               // Ext.util.JSON.decode();
               // console.log(typeof(lonlat_list[0]));
               // alert("Your data submitted successfully !");
@@ -78,7 +53,7 @@ Ext.application({
               },          
           });
         console.log(records);
-        var coord = records[0];        
+        var coord = records;        
         console.log(coord); 
         // var coord = ol.proj.fromLonLat(lonlat_list_last);
         var lonlat = new ol.geom.Point(coord);
