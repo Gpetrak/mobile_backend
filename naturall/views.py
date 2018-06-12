@@ -7,6 +7,7 @@ from mobile_backend.settings import GEOSERVER_URL
 from django.contrib.gis.geos import Point
 from django.views.decorators.csrf import csrf_exempt
 from naturall.models import Gps_points
+import json
 
 def naturall_home(request):
     # context = {'GEOSERVER_URL': GEOSERVER_URL}
@@ -38,3 +39,12 @@ def datastore(request):
             return HttpResponse("Success")
 
 
+def send_data(request):
+    if request.method == 'GET':
+        point = [24,38.0]
+        point_json = json.dumps(point)
+
+    return HttpResponse(
+               point_json,
+               #content_type='application/json'
+               )

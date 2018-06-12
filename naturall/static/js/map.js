@@ -28,25 +28,84 @@ Ext.application({
             source: source
         }); */
 
+        var data = new ol.source.Vector();
+
+        var csrf = Ext.util.Cookies.get('csrftoken');
+        
+        // take an array to store the object that we will get from the ajax response
+        var records = [];
+        
+        // create extjs store with empty data
+        var store =  Ext.create('Ext.data.Store',{
+            fields : ['id','name'],
+            data: records,
+            paging : false
+        });
+
+        Ext.Ajax.request({ 
+             url: 'data',
+             method: 'GET',
+             params: {
+             //'points' : coords_array,
+             'csrfmiddlewaretoken': csrf
+              },
+              success: function(response) {
+              // create a json object from the response string
+              res = Ext.decode(response.responseText, true);
+
+              // if we have a valid json object, then process it
+              if(res !== null && typeof (res) !== 'undefined') {
+                // loop through the data
+                Ext.each(res.data, function(obj) {
+                  // add the records to the array
+                  records.push({
+                    id: obj.id,
+                    name: obj.name
+                  })
+               });
+               
+               // update the store with the data that we got
+               store.loadData(records);
+              }
+               
+              // Ext.util.JSON.decode();
+              // console.log(typeof(lonlat_list[0]));
+              // alert("Your data submitted successfully !");
+              }, 
+              failure: function (response) {
+              // var text = response.responseText;
+              Ext.Msg.alert('Failure', 'Please try again...');
+              },          
+          });
+        console.log(records);
+        var coord = records[0];        
+        console.log(coord); 
+        // var coord = ol.proj.fromLonLat(lonlat_list_last);
+        var lonlat = new ol.geom.Point(coord);
+        // var lonlat = point;
+
+        var pointFeature = new ol.Feature({
+            geometry: lonlat,
+            weight: 20 // e.g. temprature
+            });
+
+        data.addFeature(pointFeature);
+       
+        // create the layer
         var heatPoints = new ol.layer.Heatmap({
-          source: new ol.source.Vector({
-            url: 'https://openlayers.org/en/v4.6.5/examples/data/kml/2012_Earthquakes_Mag5.kml',
-            format: new ol.format.KML({
-              extractStyles: false
-            })
-          }),
+          source: data,
           blur: parseInt(blur.value, 10),
           radius: parseInt(radius.value, 10)
         });
 
-        heatPoints.getSource().on('addfeature', function(event) {
+        /* heatPoints.getSource().on('addfeature', function(event) {
           // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
           // standards-violating <magnitude> tag in each Placemark.  We extract it from
           // the Placemark's name instead.
-          var name = event.feature.get('name');
-          var magnitude = parseFloat(name.substr(2));
+          // var name = event.feature.get('name');
+          // var magnitude = parseFloat(name.substr(2));
           event.feature.set('weight', magnitude - 5);
-        });    
+        });*/    
  
         source2 = new ol.source.TileWMS({
             url: 'https://ows.terrestris.de/osm-gray/service',
