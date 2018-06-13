@@ -85,25 +85,20 @@ Ext.application({
 
             data.addFeature(pointFeature);
          }
-       
         // create the layer
         var heatPoints = new ol.layer.Heatmap({
           source: data,
           blur: parseInt(blur.value, 10),
-          radius: parseInt(radius.value, 10)
+          radius: parseInt(radius.value, 10),
         });
 
-        var weight = data.getFeatures('weight');
-        console.log(weight);
 
-         /* heatPoints.getSource().on('addfeature', function(event) {
-           // 2012_Earthquakes_Mag5.kml stores the magnitude of each earthquake in a
-           // standards-violating <magnitude> tag in each Placemark.  We extract it from
-           // the Placemark's name instead.
-            var name = event.feature.get('name');
-            var magnitude = parseFloat(name.substr(2));
-            event.feature.set('weight', magnitude - 5);
-          }); */    
+         heatPoints.getSource().on('addfeature', function(event) {
+            // Set the points in order to listen their temprature value (weight)
+            // Tempreture was devided with 42 in order its range to be (0-1)
+	    // as refered at OpenLayers docs (ol.layer.Heatmap)
+            event.feature.set('weight', temprature / 42);
+          });   
  
         source2 = new ol.source.TileWMS({
             url: 'https://ows.terrestris.de/osm-gray/service',
