@@ -12,13 +12,13 @@ import time
 import traceback
 import signal
 import sys
-from mobile_backend.settings import BASE_DIR
+# from mobile_backend.settings import BASE_DIR
 
 from django.core.wsgi import get_wsgi_application
 
 
 
-sys.path.append(BASE_DIR)
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # adjust the Python version in the line below as needed
 sys.path.append('~/venv_mob/lib/python2.7/site-packages')
