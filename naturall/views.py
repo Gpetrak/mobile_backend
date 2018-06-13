@@ -8,6 +8,7 @@ from django.contrib.gis.geos import Point
 from django.views.decorators.csrf import csrf_exempt
 from naturall.models import Gps_points
 import json
+import random
 
 def naturall_home(request):
     # context = {'GEOSERVER_URL': GEOSERVER_URL}
@@ -38,10 +39,13 @@ def datastore(request):
         else:
             return HttpResponse("Success")
 
-
+# sending test data
 def send_data(request):
     if request.method == 'GET':
-        point = [24,38.0]
+        f = random.uniform(24.057544, 24.198272)
+        l = random.uniform(35.548071, 35.552715)
+        t = random.uniform(5.0, 42.0)
+        point = [f,l, t]
         point_json = json.dumps(point)
 
     return HttpResponse(

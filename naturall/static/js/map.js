@@ -30,12 +30,9 @@ Ext.application({
 
         var data = new ol.source.Vector();
 
-	// function in order to store ajax responses for later use
-        function store(item) {
-                return item;
-        }
         var csrf = Ext.util.Cookies.get('csrftoken');
         var records= [];
+        var temprature;
 	
         function goAjax () {
 		Ext.Ajax.request({ 
@@ -51,6 +48,8 @@ Ext.application({
                   // Ext.decode convert the resopnse from string to object
                   res = Ext.decode(response.responseText);
                   records.push(res);
+                  // values function call in order to update the values
+                  values();
                   // Ext.util.JSON.decode();
                   // console.log(typeof(lonlat_list[0]));
                   // alert("Your data submitted successfully !");
@@ -61,20 +60,31 @@ Ext.application({
                   },          
               });
 	}
-	goAjax();
-	
-        console.log(records);
-        var coord = records[0];        
-        // var coord = ol.proj.fromLonLat(lonlat_list_last);
-        var lonlat = new ol.geom.Point(coord);
-        // var lonlat = point;
+         
+        goAjax();
+        // call the function every 2 sec
+        window.setInterval(function(){
+          // call your functin here  
+          goAjax();
+        }, 2000);
 
-        var pointFeature = new ol.Feature({
-            geometry: lonlat,
-            weight: 20 // e.g. temprature
-            });
+        function values() {
+          // last item of records list
+          var last = records[records.length - 1];
+          temprature = last[2];
+          console.log(temprature);
+          var coord = ol.proj.fromLonLat(last);
+          console.log(coord);        
+          var lonlat = new ol.geom.Point(coord);
+          // var lonlat = point;
 
-        data.addFeature(pointFeature);
+          var pointFeature = new ol.Feature({
+              geometry: lonlat,
+              weight: temprature // e.g. temprature
+              });
+
+            data.addFeature(pointFeature);
+         }
        
         // create the layer
         var heatPoints = new ol.layer.Heatmap({
@@ -118,8 +128,8 @@ Ext.application({
                 new ol.interaction.DragRotateAndZoom()
             ]),
             view: new ol.View({
-                center: ol.proj.fromLonLat([24, 38.0]),
-                zoom: 7
+                center: ol.proj.fromLonLat([24.13, 35.54]),
+                zoom: 13
             })
         });
 
