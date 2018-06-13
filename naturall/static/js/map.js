@@ -66,7 +66,7 @@ Ext.application({
         window.setInterval(function(){
           // call your functin here  
           goAjax();
-        }, 2000);
+        }, 1000);
 
         function values() {
           // last item of records list
