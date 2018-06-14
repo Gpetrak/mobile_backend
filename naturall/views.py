@@ -42,8 +42,9 @@ def datastore(request):
 # sending test data
 def send_data(request):
     if request.method == 'GET':
-        f = random.uniform(24.057544, 24.198272)
-        l = random.uniform(35.548071, 35.552715)
+        f = random.uniform(24.00040556, 24.04791111)
+        l = random.uniform(35.48769444, 35.51863889)
+        # temprature
         t = random.uniform(5.0, 42.0)
         point = [f,l, t]
         point_json = json.dumps(point)

@@ -100,6 +100,11 @@ Ext.application({
             event.feature.set('weight', temprature / 42);
           });   
  
+       source = new ol.source.OSM();
+       layer = new ol.layer.Tile({
+           source: source
+       });
+ 
         source2 = new ol.source.TileWMS({
             url: 'https://ows.terrestris.de/osm-gray/service',
             params: {'LAYERS': 'OSM-WMS', 'TILED': true}
@@ -110,6 +115,9 @@ Ext.application({
 
         olMap = new ol.Map({
             layers: [
+                layer,
+                heatPoints,
+                /*
                 new ol.layer.Tile({
                     source: new ol.source.Stamen({
                         layer: 'watercolor'
@@ -119,15 +127,14 @@ Ext.application({
                     source: new ol.source.Stamen({
                         layer: 'terrain-labels'
                     })
-                }),
-                heatPoints,
+                }), */
             ],
             interactions: ol.interaction.defaults().extend([
                 new ol.interaction.DragRotateAndZoom()
             ]),
             view: new ol.View({
-                center: ol.proj.fromLonLat([24.13, 35.54]),
-                zoom: 13
+                center: ol.proj.fromLonLat([24.022, 35.507]),
+                zoom: 14
             })
         });
 
