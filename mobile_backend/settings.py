@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     # naturall app
     'naturall',
+    # roadbot_b app
+    'roadbot_b',
 ]
 
 MIDDLEWARE = [
