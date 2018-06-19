@@ -17,11 +17,11 @@ def accident_info():
         lat = float(lat)
         lng = float(lng)
 
-        location = Point(lat, lng, srid=4326)
+        location = Point(lng, lat, srid=4326)
 
         danger_zone = Accidents.objects.filter(geom__contains=location)
 
-        if danget_zone:
+        if danger_zone:
             result = "Attention: Danger Zone %s" % danger_zone
         else:
             result = "keep walking"
