@@ -5,29 +5,30 @@ from django.http import HttpResponse
 from django.contrib.gis.geos import Point
 from roadbot_b.models import Accidents
 from django.views.decorators.csrf import csrf_exempt
-# import json
+import json
 
 @csrf_exempt
-def accident_info():
+def accident_info(request):
     if request.method == 'POST':
         # convert json data to python dictionary
-        lat = request.POST.get('latitude')
-        lng = request.POST.get('longitude')
+        latlng = json.loads(request.body)
+        # lat = request.POST.get('latitude')
+        # lng = request.POST.get('longitude')
 
-        lat = float(lat)
-        lng = float(lng)
+        # lat = float(lat)
+        # lng = float(lng)
 
-        location = Point(lng, lat, srid=4326)
+        # location = Point(lng, lat, srid=4326)
 
-        danger_zone = Accidents.objects.filter(geom__contains=location)
+        # danger_zone = Accidents.objects.filter(geom__contains=location)
 
-        if danger_zone:
-            result = "Attention: Danger Zone %s" % danger_zone
-        else:
-            result = "keep walking"
+        #if danger_zone:
+        #    result = "Attention: Danger Zone %s" % danger_zone
+        #else:
+        #    result = "keep walking"
         
-        return HttpResponse(result,
-                            content_type = 'application/json'
-                            )
+        return HttpResponse("Success")
+                            #content_type = 'application/json'
+         
 
         

@@ -26,7 +26,7 @@ SECRET_KEY = '7ew((_lgk1va21lox0pfed72gbh4e3$i7w$10&3)mv=bbt7xnd'
 DEBUG = True
 
 # Enter your allowed hosts here
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', '192.168.1.4']
 # Enter your GeoServer base url
 GEOSERVER_URL = "http://localhost:8080/geoserver"
 
