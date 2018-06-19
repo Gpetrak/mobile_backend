@@ -12,6 +12,8 @@ def accident_info(request):
     if request.method == 'POST':
         # convert json data to python dictionary
         latlng = json.loads(request.body)
+        latitude = latlng['lat']
+        longitude = latlng['lng']
         # lat = request.POST.get('latitude')
         # lng = request.POST.get('longitude')
 
@@ -27,7 +29,7 @@ def accident_info(request):
         #else:
         #    result = "keep walking"
         
-        return HttpResponse("Success")
+        return HttpResponse("success")
                             #content_type = 'application/json'
          
 
