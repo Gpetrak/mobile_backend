@@ -16,7 +16,7 @@ def accident_info(request):
         lat = float(lat)
         lng = float(lng)
   
-        location = Point(lng, lat, srid=4326)
+        location = Point(lat, lng, srid=4326)
 
         danger_zone = Accidents.objects.filter(geom__contains=location)
 
