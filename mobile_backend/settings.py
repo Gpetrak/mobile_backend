@@ -30,6 +30,18 @@ ALLOWED_HOSTS = ['localhost', '192.168.1.4', '192.168.1.6']
 # Enter your GeoServer base url
 GEOSERVER_URL = "http://localhost:8080/geoserver"
 
+# this disables Cross domain requests
+CORS_ORIGIN_ALLOW_ALL = False 
+
+# this allows cookie being passed cross domain    
+CORS_ALLOW_CREDENTIALS = True 
+
+# this is the list of allowed origins for cross domain ajax
+CORS_ORIGIN_WHITELIST = ( 
+        'localhost:8100',
+
+)
+
 
 # Application definition
 
@@ -43,6 +55,9 @@ INSTALLED_APPS = [
 
     # GIS support
     'django.contrib.gis',
+
+    # CORS
+    'corsheaders',
     # naturall app
     'naturall',
     # roadbot_b app
@@ -57,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'mobile_backend.urls'

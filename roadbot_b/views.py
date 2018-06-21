@@ -9,11 +9,11 @@ import json
 
 @csrf_exempt
 def accident_info(request):
-    if request.method == 'POST':
+    if request.method == 'GET':
         # convert json data to python dictionary
-        latlng = json.loads(request.body)
-        latitude = latlng['lat']
-        longitude = latlng['lng']
+        # latlng = json.loads(request.body)
+        # latitude = latlng['lat']
+        # longitude = latlng['lng']
         # lat = request.POST.get('latitude')
         # lng = request.POST.get('longitude')
 
