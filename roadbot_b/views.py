@@ -16,16 +16,27 @@ def accident_info(request):
         lat = float(lat)
         lng = float(lng)
   
-        location = Point(lat, lng, srid=4326)
+        location = Point(lng, lat, srid=4326)
 
         danger_zone = Accidents.objects.filter(geom__contains=location)
 
         if danger_zone:
-            result = "Attention: Danger Zone %s" % danger_zone
+            # create a list with the field's values of the resulted object
+            fields = []
+            res = 'Alert'
+            cause = danger_zone.values_list('cause', flat=True).get()
+            str_addr = danger_zone.values_list('str_addr', flat=True).get()
+            accid_num = int(danger_zone.values_list('accid_num', flat=True).get())
+
+            fields.extend([res, cause, str_addr, accid_num])
+            result = json.dumps(fields)
+            # result = "Attention: Danger Zone %s" % danger_zone
         else:
-            result = "keep walking"
-        res_json = json.dumps(result)
-        return HttpResponse(res_json,
+            fields = []
+            res = "Keep Walking"
+            fields.append(res)
+            result = json.dumps(res)
+        return HttpResponse(result,
                             content_type = 'application/json')
          
 
