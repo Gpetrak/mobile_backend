@@ -23,19 +23,22 @@ def accident_info(request):
         if danger_zone:
             # create a list with the field's values of the resulted object
             fields = []
-            res = 'Alert'
+            info = 'Alert'
             cause = danger_zone.values_list('cause', flat=True).get()
             str_addr = danger_zone.values_list('str_addr', flat=True).get()
             accid_num = int(danger_zone.values_list('accid_num', flat=True).get())
 
-            fields.extend([res, cause, str_addr, accid_num])
+            fields.extend([info, cause, str_addr, accid_num])
             result = json.dumps(fields)
             # result = "Attention: Danger Zone %s" % danger_zone
         else:
             fields = []
-            res = "Keep Walking"
-            fields.append(res)
-            result = json.dumps(res)
+            info = "You are safe"
+            cause = ""
+            str_addr = ""
+            accid_num = 0
+            fields.extend([info, cause, str_addr, accid_num])
+            result = json.dumps(fields)
         return HttpResponse(result,
                             content_type = 'application/json')
          
