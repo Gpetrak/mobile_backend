@@ -24,29 +24,38 @@ def datastore(request):
         gps_data = json.loads(request.body)
         lat = gps_data['lat']
         lon = gps_data['lon']
-        temp = gps_dtaa['temp']
+        temp = gps_data['temp']
+     
+        dog = []
         
-        location = Point(latitude, longitude, srid=4326)
+        # location = Point(latitude, longitude, srid=4326)
 
-        e1 = Gps_data(location = location,
-                   temp = temprature)
+        #e1 = Gps_data(location = location,
+        #           temp = temprature)
 
-        gps1.save()
+        #gps1.save()
 
         # check if e1 saved
-        if e1.pk is None:
-            return HttpResponse("Upload failed")
-        else:
-            return HttpResponse("Success")
+        # if e1.pk is None:
+        #    return HttpResponse("Upload failed")
+        # else:
+        #    return HttpResponse("Success")
+
+        dog.extend([lat, lon, temp])
+        json.dumps(dog)
+    
+        return HttpResponse(dog)
 
 # sending test data
 def send_data(request):
     if request.method == 'GET':
-        f = random.uniform(24.00040556, 24.04791111)
-        l = random.uniform(35.48769444, 35.51863889)
+        
+        point = datastore() 
+        #f = random.uniform(24.00040556, 24.04791111)
+        #l = random.uniform(35.48769444, 35.51863889)
         # temprature
-        t = random.uniform(5.0, 42.0)
-        point = [f,l, t]
+        #t = random.uniform(5.0, 42.0)
+        # point = [f,l, t]
         point_json = json.dumps(point)
 
     return HttpResponse(
