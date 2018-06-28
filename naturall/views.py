@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.http import HttpResponse
 from mobile_backend.settings import MEDIA_ROOT
+from mobile_backend.settings import BASE_DIR
 from mobile_backend.settings import GEOSERVER_URL
 from django.contrib.gis.geos import Point
 from django.views.decorators.csrf import csrf_exempt
@@ -41,30 +42,35 @@ def datastore(request):
         #    return HttpResponse("Success")
 
         point.extend([lat, lon, temp])
+        with open(BASE_DIR+ '/media_root/' + "/point.txt", "w") as f:
+            f.write(repr(point))
         point_json = json.dumps(point)
     
         return HttpResponse("Success")
 
-    if request.method == 'GET':
-        point_json = json.dumps(point)
+    #if request.method == 'GET':
+    #    point_json = json.dumps(point)
    
-        return HttpResponse(
-                  point_json,
-                  )
+    #    return HttpResponse(
+    #              point_json,
+    #              )
 
 # sending test data
 def send_data(request):
     if request.method == 'GET':
         
-        point = [] 
+        with open(BASE_DIR + '/media_root/point.txt', 'r') as f:
+            lines = f.readlines()
+    
         #f = random.uniform(24.00040556, 24.04791111)
         #l = random.uniform(35.48769444, 35.51863889)
         # temprature
         #t = random.uniform(5.0, 42.0)
         # point = [f,l, t]
-        point_json = json.dumps(point)
+        point = lines[0]
+        #point_json = json.dumps(point)
 
     return HttpResponse(
-               point_json,
+               point,
                #content_type='application/json'
                )
