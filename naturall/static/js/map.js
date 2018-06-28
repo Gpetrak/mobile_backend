@@ -133,7 +133,7 @@ Ext.application({
                 new ol.interaction.DragRotateAndZoom()
             ]),
             view: new ol.View({
-                center: ol.proj.fromLonLat([24.022, 35.507]),
+                center: ol.proj.fromLonLat([23.69255, 37.94243]),
                 zoom: 14
             })
         });
