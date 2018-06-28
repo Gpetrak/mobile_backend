@@ -36,7 +36,7 @@ Ext.application({
 	
         function goAjax () {
 		Ext.Ajax.request({ 
-                  url: 'data',
+                  url: 'result',
                   method: 'GET',
                   // wait JavaScript and store the ajax response (depricated)
                   async: false,

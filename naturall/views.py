@@ -19,6 +19,7 @@ def naturall_home(request):
 
 @csrf_exempt
 def datastore(request):
+    point = []
     if request.method == 'POST':
         # convert json data to python dictionary
         gps_data = json.loads(request.body)
@@ -26,8 +27,6 @@ def datastore(request):
         lon = gps_data['lon']
         temp = gps_data['temp']
      
-        dog = []
-        
         # location = Point(latitude, longitude, srid=4326)
 
         #e1 = Gps_data(location = location,
@@ -41,16 +40,23 @@ def datastore(request):
         # else:
         #    return HttpResponse("Success")
 
-        dog.extend([lat, lon, temp])
-        json.dumps(dog)
+        point.extend([lat, lon, temp])
+        point_json = json.dumps(point)
     
-        return HttpResponse(dog)
+        return HttpResponse("Success")
+
+    if request.method == 'GET':
+        point_json = json.dumps(point)
+   
+        return HttpResponse(
+                  point_json,
+                  )
 
 # sending test data
 def send_data(request):
     if request.method == 'GET':
         
-        point = datastore() 
+        point = [] 
         #f = random.uniform(24.00040556, 24.04791111)
         #l = random.uniform(35.48769444, 35.51863889)
         # temprature
