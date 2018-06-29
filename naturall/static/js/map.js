@@ -134,7 +134,7 @@ Ext.application({
             ]),
             view: new ol.View({
                 center: ol.proj.fromLonLat([23.69255, 37.94243]),
-                zoom: 14
+                zoom: 16
             })
         });
 
