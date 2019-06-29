@@ -38,7 +38,7 @@ CORS_ALLOW_CREDENTIALS = True
 
 # this is the list of allowed origins for cross domain ajax
 CORS_ORIGIN_WHITELIST = ( 
-        'localhost:8100',
+        'http://localhost:8100',
 
 )
 
